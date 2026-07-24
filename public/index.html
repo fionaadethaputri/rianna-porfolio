@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rianna Portfolio</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style>
+    .art-item {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 1rem;
+      border: 1px solid #FFE4E9;
+      background: white;
+      box-shadow: 0 8px 20px rgba(255, 133, 162, 0.10);
+      transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+      cursor: zoom-in;
+      will-change: transform;
+      object-fit: contain;
+    }
+
+    .art-item:hover {
+      transform: translateY(-6px) scale(1.03);
+      box-shadow: 0 16px 36px rgba(255, 133, 162, 0.24);
+      filter: brightness(1.03);
+    }
+
+    .art-item:active {
+      animation: pop 220ms ease-out;
+    }
+
+    @keyframes pop {
+      0% { transform: scale(0.96); }
+      50% { transform: scale(1.04); }
+      100% { transform: scale(1); }
+    }
+
+    body.modal-open {
+      overflow: hidden;
+    }
+
+    .image-modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(17, 24, 39, 0.76);
+      z-index: 50;
+      backdrop-filter: blur(4px);
+    }
+
+    .image-modal.active {
+      display: flex;
+      animation: fadeIn 0.2s ease-out;
+    }
+
+    .image-modal__card {
+      position: relative;
+      max-width: min(94vw, 980px);
+      max-height: 92vh;
+      background: white;
+      border-radius: 1.2rem;
+      padding: 10px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+      animation: popModal 0.25s cubic-bezier(.2, .8, .2, 1);
+    }
+
+    .image-modal__card img {
+      display: block;
+      max-width: 100%;
+      max-height: 84vh;
+      width: auto;
+      height: auto;
+      border-radius: 0.95rem;
+      object-fit: contain;
+    }
+
+    .image-modal__close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 34px;
+      height: 34px;
+      border: 0;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.95);
+      color: #FF85A2;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes popModal {
+      0% { transform: scale(0.94) translateY(8px); opacity: 0; }
+      100% { transform: scale(1) translateY(0); opacity: 1; }
+    }
+  </style>
+</head>
+<body class="bg-[#FFF9FA] text-gray-700 min-h-screen flex flex-col items-center py-10 px-4 sm:px-6">
+
+  <!-- Header atas -->
+  <header class="text-center mb-8 sm:mb-10">
+    <h1 class="text-4xl sm:text-5xl font-black tracking-[0.35em] uppercase text-[#FF85A2] drop-shadow-[0_2px_0_rgba(255,255,255,0.9)]" style="font-family: 'Georgia', 'Times New Roman', serif; letter-spacing: 0.35em;">
+      rianna portfolio
+    </h1>
+  </header>
+
+  <!-- Tombol Navigasi Melonjong (Capsule Buttons) -->
+  <nav class="flex flex-wrap justify-center gap-3 mb-12 max-w-xl">
+    <!-- Tombol All untuk menampilkan semua gambar di awal -->
+    <button onclick="filterArt('all')" id="btn-all" class="px-5 py-2 rounded-full bg-[#FF85A2] text-white text-xs font-medium tracking-wide shadow-sm border border-[#FF85A2] transition duration-200 cursor-pointer">
+      all works
+    </button>
+    
+    <button onclick="filterArt('cpl')" id="btn-cpl" class="px-5 py-2 rounded-full bg-white text-[#FF85A2] text-xs font-medium tracking-wide shadow-sm border border-[#FFD1DC] hover:border-[#FF85A2] transition duration-200 cursor-pointer">
+      chibi cpl
+    </button>
+
+    <button onclick="filterArt('single')" id="btn-single" class="px-5 py-2 rounded-full bg-white text-[#FF85A2] text-xs font-medium tracking-wide shadow-sm border border-[#FFD1DC] hover:border-[#FF85A2] transition duration-200 cursor-pointer">
+      single chibi
+    </button>
+
+    <button onclick="filterArt('comms')" id="btn-comms" class="px-5 py-2 rounded-full bg-white text-[#FF85A2] text-xs font-medium tracking-wide shadow-sm border border-[#FFD1DC] hover:border-[#FF85A2] transition duration-200 cursor-pointer">
+      comms result
+    </button>
+  </nav>
+
+  <!-- Container Grid Gambar Utama -->
+<main class="w-full max-w-4xl">
+  <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-5 items-start">
+    
+    <!-- Kategori: Chibi Couple -->
+      <img src="/images/chibi cpl/chibi cpl 6.jpeg" alt="Chibi Couple" loading="lazy" onclick="openImage(this.src, this.alt)" class="art-item cpl w-full h-auto rounded-2xl border border-[#FFE4E9] bg-white">
+    <img src="/images/chibi cpl/chibi cpl 5.jpeg" alt="Chibi Couple" loading="lazy" onclick="openImage(this.src, this.alt)" class="art-item cpl w-full h-auto rounded-2xl border border-[#FFE4E9] bg-white">
+    <img src="/images/chibi cpl/chibi cpl 4.jpeg" alt="Chibi Couple" loading="lazy" onclick="openImage(this.src, this.alt)" class="art-item cpl w-full h-auto rounded-2xl border border-[#FFE4E9] bg-white">
+    <img src="/images/chibi cpl/chibi cpl 3.jpeg" alt="Chibi Couple" loading="lazy" onclick="openImage(this.src, this.alt)" class="art-item cpl w-full h-auto rounded-2xl border border-[#FFE4E9] bg-white">
+    <img src="/images/chibi cpl/chibi cpl 2.jpeg" alt="Chibi Couple" loading="lazy" onclick="openImage(this.src, this.alt)" class="art-item cpl w-full h-auto rounded-2xl border border-[#FFE4E9] bg-white">
+    <img src="/images/chibi cpl/chibi cpl 1.jpeg" alt="Chibi Couple" loading="lazy" onclick="openImage(this.src, this.alt)" class="art-item cpl w-full h-auto rounded-2xl border border-[#FFE4E9] bg-white">
+
+    <!-- Kategori: Single Chibi -->
+      <img src="/images/single chibi/single chibi 10.jpeg" alt="Single Chibi" loading="lazy" onclick="openImage(this.src, this.alt)" class="art-item single w-full h-auto rounded-2xl border border-[#FFE4E9] bg-white">
+     <img src="/images/single chibi/single chibi 9.jpeg" alt="Single Chibi" loading="lazy" onclick="openImage(this.src, this.alt)" class="art-item single w-full h-auto rounded-2xl border border-[#FFE4E9] bg-white">
+     <img src="/images/single chibi/single chibi 8.jpeg" alt="Single Chibi" loading="lazy" onclick="openImage(this.src, this.alt)" class="art-item single w-full h-auto rounded-2xl border border-[#FFE4E9] bg-white">
+     <img src="/images/single chibi/single chibi 7.jpeg" alt="Single Chibi" loading="lazy" onclick="openImage(this.src, this.alt)" class="art-item single w-full h-auto rounded-2xl border border-[#FFE4E9] bg-white">
+     <img src="/images/single chibi/single chibi 6.jpeg" alt="Single Chibi" loading="lazy" onclick="openImage(this.src, this.alt)" class="art-item single w-full h-auto rounded-2xl border border-[#FFE4E9] bg-white">
+     <img src="/images/single chibi/single chibi 5.jpeg" alt="Single Chibi" loading="lazy" onclick="openImage(this.src, this.alt)" class="art-item single w-full h-auto rounded-2xl border border-[#FFE4E9] bg-white">
+     <img src="/images/single chibi/single chibi 4.jpeg" alt="Single Chibi" loading="lazy" onclick="openImage(this.src, this.alt)" class="art-item single w-full h-auto rounded-2xl border border-[#FFE4E9] bg-white">
+    <img src="/images/single chibi/single chibi 3.jpeg" alt="Single Chibi" loading="lazy" onclick="openImage(this.src, this.alt)" class="art-item single w-full h-auto rounded-2xl border border-[#FFE4E9] bg-white">
+    <img src="/images/single chibi/single chibi 2.jpeg" alt="Single Chibi" loading="lazy" onclick="openImage(this.src, this.alt)" class="art-item single w-full h-auto rounded-2xl border border-[#FFE4E9] bg-white">
+    <img src="/images/single chibi/single chibi 1.jpeg" alt="Single Chibi" loading="lazy" onclick="openImage(this.src, this.alt)" class="art-item single w-full h-auto rounded-2xl border border-[#FFE4E9] bg-white">
+    
+
+    <!-- Kategori: Comms Result -->
+      <img src="/images/chibi cpl/comms cpl 3.jpeg" alt="Comms Result" loading="lazy" onclick="openImage(this.src, this.alt)" class="art-item comms w-full h-auto rounded-2xl border border-[#FFE4E9] bg-white">
+      <img src="/images/chibi cpl/comms cpl 2.jpeg" alt="Comms Result" loading="lazy" onclick="openImage(this.src, this.alt)" class="art-item comms w-full h-auto rounded-2xl border border-[#FFE4E9] bg-white">
+      <img src="/images/chibi cpl/comms cpl 1.jpeg" alt="Comms Result" loading="lazy" onclick="openImage(this.src, this.alt)" class="art-item comms w-full h-auto rounded-2xl border border-[#FFE4E9] bg-white">
+      <img src="/images/single chibi/comms single 4.jpeg" alt="Comms Result" loading="lazy" onclick="openImage(this.src, this.alt)" class="art-item comms w-full h-auto rounded-2xl border border-[#FFE4E9] bg-white">
+      <img src="/images/single chibi/comms single 3.jpeg" alt="Comms Result" loading="lazy" onclick="openImage(this.src, this.alt)" class="art-item comms w-full h-auto rounded-2xl border border-[#FFE4E9] bg-white">
+      <img src="/images/single chibi/comms single 2.jpeg" alt="Comms Result" loading="lazy" onclick="openImage(this.src, this.alt)" class="art-item comms w-full h-auto rounded-2xl border border-[#FFE4E9] bg-white">
+      <img src="/images/single chibi/comms single 1.jpeg" alt="Comms Result" loading="lazy" onclick="openImage(this.src, this.alt)" class="art-item comms w-full h-auto rounded-2xl border border-[#FFE4E9] bg-white">
+    
+  </div>
+</main>
+
+  <div class="image-modal" id="imageModal" onclick="closeImageModal(event)">
+    <div class="image-modal__card">
+      <button type="button" class="image-modal__close" onclick="closeImageModal(event)" aria-label="Close preview">✕</button>
+      <img id="modalImage" src="" alt="">
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="mt-20 sm:mt-24 text-center text-xs sm:text-sm text-[#D8A1AE] space-y-2">
+    <div class="flex flex-wrap justify-center gap-2 sm:gap-4 text-[11px] sm:text-xs tracking-[0.2em] uppercase">
+      <a href="https://x.com/riann4a" target="_blank" rel="noopener noreferrer" class="hover:text-[#FF85A2] transition-colors duration-200">x @riann4a</a>
+      <a href="https://www.tiktok.com/@riann4a._" target="_blank" rel="noopener noreferrer" class="hover:text-[#FF85A2] transition-colors duration-200">tiktok @riann4a._</a>
+      <span class="text-[#D8A1AE]">dc riann4aa._</span>
+    </div>
+    <p class="tracking-[0.3em] uppercase">© riann4a</p>
+  </footer>
+
+  <!-- Script Logika Penyaring (Filter) Gambar -->
+  <script>
+    function openImage(src, alt) {
+      const modal = document.getElementById('imageModal');
+      const modalImage = document.getElementById('modalImage');
+      modalImage.src = src;
+      modalImage.alt = alt;
+      modal.classList.add('active');
+      document.body.classList.add('modal-open');
+    }
+
+    function closeImageModal(event) {
+      const modal = document.getElementById('imageModal');
+      const target = event ? event.target : null;
+      const isOverlayClick = target && target.id === 'imageModal';
+      const isCloseButton = target && target.closest('.image-modal__close');
+
+      if (isOverlayClick || isCloseButton) {
+        modal.classList.remove('active');
+        document.body.classList.remove('modal-open');
+      }
+    }
+
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape') {
+        const modal = document.getElementById('imageModal');
+        modal.classList.remove('active');
+        document.body.classList.remove('modal-open');
+      }
+    });
+
+    const allItems = Array.from(document.querySelectorAll('.art-item'));
+    allItems.forEach((item, index) => {
+      item.dataset.originalOrder = index;
+    });
+
+    function shuffleElements(elements) {
+      const shuffled = [...elements];
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+
+      const parent = shuffled[0]?.parentNode;
+      if (!parent) return;
+
+      const fragment = document.createDocumentFragment();
+      shuffled.forEach(item => fragment.appendChild(item));
+      parent.appendChild(fragment);
+    }
+
+    function reorderByOriginalOrder(elements) {
+      const parent = elements[0]?.parentNode;
+      if (!parent) return;
+
+      const ordered = [...elements].sort((a, b) => {
+        const aOrder = Number(a.dataset.originalOrder || 0);
+        const bOrder = Number(b.dataset.originalOrder || 0);
+        return aOrder - bOrder;
+      });
+
+      const fragment = document.createDocumentFragment();
+      ordered.forEach(item => fragment.appendChild(item));
+      parent.appendChild(fragment);
+    }
+
+    function filterArt(category) {
+      const items = Array.from(document.querySelectorAll('.art-item'));
+      const shouldShuffle = category === 'all';
+
+      items.forEach(item => {
+        if (category === 'all') {
+          item.style.display = 'block';
+        } else if (item.classList.contains(category)) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+
+      if (shouldShuffle) {
+        const visibleItems = items.filter(item => item.style.display === 'block');
+        shuffleElements(visibleItems);
+      } else {
+        reorderByOriginalOrder(items);
+      }
+
+      const buttons = document.querySelectorAll('nav button');
+      buttons.forEach(btn => {
+        btn.classList.remove('bg-[#FF85A2]', 'text-white', 'border-[#FF85A2]');
+        btn.classList.add('bg-white', 'text-[#FF85A2]', 'border-[#FFD1DC]');
+      });
+
+      const activeBtn = document.getElementById(`btn-${category}`);
+      if (activeBtn) {
+        activeBtn.classList.remove('bg-white', 'text-[#FF85A2]', 'border-[#FFD1DC]');
+        activeBtn.classList.add('bg-[#FF85A2]', 'text-white', 'border-[#FF85A2]');
+      }
+    }
+
+    filterArt('all');
+  </script>
+
+</body>
+</html>
